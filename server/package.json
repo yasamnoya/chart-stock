@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "env-cmd -f .env.dev nodemon src/index.js",
+    "start": "env-cmd -f .env.dev node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,18 @@
   "bugs": {
     "url": "https://github.com/yasamnoya/chart-stock/issues"
   },
-  "homepage": "https://github.com/yasamnoya/chart-stock#readme"
+  "homepage": "https://github.com/yasamnoya/chart-stock#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "env-cmd": "^10.1.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "session": "^0.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.4.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "nodemon": "^2.0.15"
+  }
 }
