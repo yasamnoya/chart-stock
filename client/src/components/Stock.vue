@@ -10,6 +10,13 @@ export default {
   data: () => ({
     chart: null,
   }),
+  watch: {
+    stockData() {
+      console.log('updated');
+      console.log(this.stockData);
+      this.chart.update();
+    },
+  },
   mounted() {
     const config = {
       type: 'line',

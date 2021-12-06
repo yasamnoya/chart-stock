@@ -3,6 +3,8 @@
     Homepage
     <div>
       <stock :dateList="dateList" :stockData="stockData"></stock>
+      <input v-model="newStockNo" type="text" />
+      <button @click="addStock">新增</button>
     </div>
   </div>
 </template>
@@ -16,27 +18,43 @@ export default {
     Stock,
   },
   data: () => ({
+    newStockNo: '',
     socket: io(process.env.VUE_APP_BACKEND_URL),
-    dateList: ['January', 'February', 'March', 'April', 'May', 'June'],
+    colors: ['#170055', '#3E00FF', '#AE00FB', '#B5FFD9'],
+    dateList: [],
     stockData: [
       {
-        label: '0050',
+        label: 'Label',
         backgroundColor: 'rgb(255, 0, 132)',
         borderColor: 'rgb(255, 0, 132)',
-        data: [1, 11, 6, 3, 21, 31, 46],
-      },
-      {
-        label: '0056',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: [0, 10, 5, 2, 20, 30, 45],
+        data: [1],
       },
     ],
   }),
   created() {
+    for (let i = 0; i < 30; i += 1) this.dateList.push('');
+
     this.socket.on('connect', () => {
       console.log('connected');
     });
+
+    this.socket.on('gotPrices', (prices) => {
+      this.stockData.splice(0, this.stockData.length);
+      for (let i = 0; i < prices.stockNos.length; i += 1) {
+        this.stockData.push({
+          label: prices.stockNos[i],
+          backgroundColor: this.colors[i],
+          borderColor: this.colors[i],
+          data: prices.pricesList[i],
+        });
+      }
+    });
+  },
+  methods: {
+    addStock() {
+      if (this.newStockNo.trim() === '') return;
+      this.socket.emit('addStock', this.newStockNo.trim());
+    },
   },
 };
 </script>
