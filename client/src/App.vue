@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    Homepage
-    <div class="container w-75">
+    <div id="header" class="d-flex flex-column">
+      <h1 class="my-auto">Chart the Stock Market</h1>
+      <p>其他人新增的股票編號會及時顯示，最多可同時顯示 4 支股票的價格，點選標籤以刪除。</p>
+    </div>
+    <div class="card container w-75 p-5">
       <div class="row">
         <stock @deleteStock="deleteStock" :dateList="dateList" :stockData="stockData"></stock>
       </div>
-      <div class="row">
-        <div id="form" class="col-md-6 offset-3">
+      <div class="row mt-4">
+        <div id="form">
           <div class="d-flex">
             <input @keyup.enter="addStock" v-model="newStockNo" type="text" class="form-control" />
             <button @click="addStock" class="btn btn-primary">新增</button>
@@ -78,16 +81,21 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  background-color: azure;
   color: #2c3e50;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+}
+
+#header {
+  height: 25vh;
 }
 
 #form div {
   gap: 1rem;
 }
 
-#form button {
-  width: 75px;
+#form div button {
+  min-width: 75px;
 }
 </style>
