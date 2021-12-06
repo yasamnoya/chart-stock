@@ -1,10 +1,18 @@
 <template>
   <div id="app">
     Homepage
-    <div>
-      <stock :dateList="dateList" :stockData="stockData"></stock>
-      <input v-model="newStockNo" type="text" />
-      <button @click="addStock">新增</button>
+    <div class="container w-75">
+      <div class="row">
+        <stock @deleteStock="deleteStock" :dateList="dateList" :stockData="stockData"></stock>
+      </div>
+      <div class="row">
+        <div id="form" class="col-md-6 offset-3">
+          <div class="d-flex">
+            <input @keyup.enter="addStock" v-model="newStockNo" type="text" class="form-control" />
+            <button @click="addStock" class="btn btn-primary">新增</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -20,7 +28,7 @@ export default {
   data: () => ({
     newStockNo: '',
     socket: io(process.env.VUE_APP_BACKEND_URL),
-    colors: ['#170055', '#3E00FF', '#AE00FB', '#B5FFD9'],
+    colors: ['#170055', '#3E00FF', '#AE00FB', '#95DFB9'],
     dateList: [],
     stockData: [
       {
@@ -53,7 +61,12 @@ export default {
   methods: {
     addStock() {
       if (this.newStockNo.trim() === '') return;
+      if (this.stockData.length >= 4) return;
       this.socket.emit('addStock', this.newStockNo.trim());
+      this.newStockNo = '';
+    },
+    deleteStock(stockNo) {
+      this.socket.emit('deleteStock', stockNo);
     },
   },
 };
@@ -66,5 +79,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  width: 100vw;
+  height: 100vh;
+}
+
+#form div {
+  gap: 1rem;
+}
+
+#form button {
+  width: 75px;
 }
 </style>

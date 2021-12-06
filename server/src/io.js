@@ -21,7 +21,6 @@ io.on('connection', async (socket) => {
     try {
       if (stockData.stockNos.includes(stockNo)) return;
 
-      console.log('fetch', stockNo);
       const prices = await fetchStockPriceOfDays(30, stockNo);
       stockData.stockNos.push(stockNo);
       stockData.pricesList.push(prices);
@@ -29,6 +28,14 @@ io.on('connection', async (socket) => {
     } catch (e) {
       console.log(e);
     }
+  });
+
+  socket.on('deleteStock', (stockNoToDelete) => {
+    stockData.stockNos = stockData.stockNos.filter((stock) => stock !== stockNoToDelete);
+    stockData.pricesList = stockData.pricesList.filter(
+      (prices) => prices.label !== stockNoToDelete,
+    );
+    io.emit('gotPrices', stockData);
   });
 });
 

@@ -12,8 +12,6 @@ export default {
   }),
   watch: {
     stockData() {
-      console.log('updated');
-      console.log(this.stockData);
       this.chart.update();
     },
   },
@@ -24,7 +22,16 @@ export default {
         labels: this.dateList,
         datasets: this.stockData,
       },
-      options: {},
+      options: {
+        plugins: {
+          legend: {
+            position: 'bottom',
+            onClick: (evt, item) => {
+              this.$emit('deleteStock', item.text);
+            },
+          },
+        },
+      },
     };
     this.chart = new Chart(document.getElementById('myChart'), config);
   },
